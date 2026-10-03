@@ -1,0 +1,118 @@
+schema_version: 1
+id: btop
+name: btop
+category: tool
+detection:
+  executables: [btop]
+  processes: [btop]
+  config_paths:
+    - ~/.config/btop
+packages:
+  fedora: [btop]
+  arch: [btop]
+  debian: [btop]
+  opensuse: [btop]
+configuration:
+  files:
+    - path: ~/.config/btop/btop.conf
+      format: conf
+      syntax: equals
+      settings:
+        - key: color_theme
+          label: Color theme
+          group: Display
+          type: string
+          default: Default
+          description: Built-in or user-installed btop theme name.
+        - key: truecolor
+          label: Use 24-bit color
+          group: Display
+          type: boolean
+          default: true
+          description: Use truecolor when the terminal supports it.
+        - key: theme_background
+          label: Show theme background
+          group: Display
+          type: boolean
+          default: true
+          description: Disable to let the terminal background show through.
+        - key: force_tty
+          label: Force basic terminal mode
+          group: Display
+          type: boolean
+          default: false
+          description: Use 16-color TTY mode and terminal-friendly graph symbols.
+        - key: rounded_corners
+          label: Rounded panel corners
+          group: Display
+          type: boolean
+          default: true
+        - key: graph_symbol
+          label: Graph character style
+          group: Display
+          type: choice
+          choices: [braille, block, tty]
+          default: braille
+          description: Braille is detailed but needs a font with braille glyphs.
+        - key: update_ms
+          label: Refresh interval (milliseconds)
+          group: Performance
+          type: integer
+          minimum: 200
+          maximum: 60000
+          step: 100
+          default: 2000
+          description: Upstream recommends 2000 ms or more for graph sampling.
+        - key: proc_tree
+          label: Show processes as a tree
+          group: Processes
+          type: boolean
+          default: false
+        - key: proc_sorting
+          label: Process sort order
+          group: Processes
+          type: choice
+          choices: [pid, program, arguments, threads, user, memory, "cpu lazy", "cpu direct"]
+          default: "cpu lazy"
+        - key: proc_colors
+          label: Color process list by CPU usage
+          group: Processes
+          type: boolean
+          default: true
+        - key: show_swap
+          label: Show swap usage
+          group: Memory and storage
+          type: boolean
+          default: true
+        - key: show_disks
+          label: Show disk usage
+          group: Memory and storage
+          type: boolean
+          default: true
+        - key: only_physical
+          label: Hide non-physical disks
+          group: Memory and storage
+          type: boolean
+          default: true
+        - key: temp_scale
+          label: Temperature units
+          group: Hardware
+          type: choice
+          choices: [celsius, fahrenheit, kelvin, rankine]
+          default: celsius
+          description: Temperature display scale used by btop.
+        - key: show_battery
+          label: Show battery status
+          group: Hardware
+          type: boolean
+          default: true
+        - key: log_level
+          label: Log verbosity
+          group: Diagnostics
+          type: choice
+          choices: [ERROR, WARNING, INFO, DEBUG]
+          default: WARNING
+          description: Higher levels include more detailed diagnostic output.
+documentation:
+  official: https://github.com/aristocratos/btop
+  configuration: https://github.com/aristocratos/btop#configurability

@@ -1,0 +1,111 @@
+schema_version: 1
+id: mpv
+name: mpv
+category: media
+detection:
+  executables: [mpv]
+  config_paths:
+    - ~/.config/mpv
+packages:
+  fedora: [mpv]
+  arch: [mpv]
+  debian: [mpv]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+  display_servers:
+    wayland: supported
+    x11: supported
+configuration:
+  files:
+    - path: ~/.config/mpv/mpv.conf
+      format: conf
+      syntax: equals
+      settings:
+        - key: volume
+          label: Startup volume
+          type: number
+          minimum: 0
+          maximum: 100
+          default: 100
+        - key: volume-max
+          label: Maximum volume
+          type: number
+          minimum: 100
+          maximum: 1000
+          default: 130
+        - key: fullscreen
+          label: Start fullscreen
+          type: boolean
+          default: false
+        - key: keep-open
+          label: Keep window open after playback
+          type: choice
+          choices: ["no", "yes", always]
+          default: "no"
+        - key: save-position-on-quit
+          label: Resume position after quitting
+          type: boolean
+          default: false
+        - key: hwdec
+          label: Hardware video decoding
+          type: choice
+          choices: ["no", auto, auto-safe, auto-copy]
+          default: "no"
+        - key: osc
+          label: On-screen controls
+          type: boolean
+          default: true
+        - key: osd-level
+          label: On-screen display level
+          type: integer
+          minimum: 0
+          maximum: 3
+          default: 1
+        - key: osd-font
+          label: On-screen display font
+          type: string
+          default: sans-serif
+        - key: osd-font-size
+          label: On-screen display font size
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 30
+        - key: sub-font
+          label: Subtitle font
+          type: string
+          default: sans-serif
+        - key: sub-font-size
+          label: Subtitle font size
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 38
+        - key: sub-auto
+          label: Automatically load subtitles
+          type: choice
+          choices: ["no", exact, fuzzy, all]
+          default: exact
+        - key: sub-visibility
+          label: Show subtitles
+          type: boolean
+          default: true
+        - key: ytdl
+          label: Enable yt-dlp URL support
+          type: boolean
+          default: true
+        - key: screenshot-format
+          label: Screenshot format
+          type: choice
+          choices: [jpg, png, webp, jxl, avif]
+          default: jpg
+        - key: screenshot-jpeg-quality
+          label: JPEG screenshot quality
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 90
+documentation:
+  configuration: https://mpv.io/manual/stable/#configuration-files
+  options: https://mpv.io/manual/stable/#options

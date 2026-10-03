@@ -1,0 +1,123 @@
+schema_version: 1
+id: mako
+name: Mako
+category: notification
+detection:
+  executables: [mako]
+  processes: [mako]
+  config_paths:
+    - ~/.config/mako
+packages:
+  fedora: [mako]
+  arch: [mako]
+  debian: [mako-notifier]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+configuration:
+  files:
+    - path: ~/.config/mako/config
+      format: conf
+      syntax: equals
+      settings:
+        - key: font
+          label: Notification font
+          type: string
+          default: "monospace 10"
+        - key: background-color
+          label: Background color
+          type: string
+          default: "#285577FF"
+        - key: text-color
+          label: Text color
+          type: string
+          default: "#FFFFFFFF"
+        - key: width
+          label: Popup width
+          type: integer
+          minimum: 50
+          maximum: 4000
+          default: 300
+        - key: height
+          label: Popup maximum height
+          type: integer
+          minimum: 0
+          maximum: 4000
+          default: 100
+        - key: border-size
+          label: Border size
+          type: integer
+          minimum: 0
+          maximum: 40
+          default: 2
+        - key: border-color
+          label: Border color
+          type: string
+          default: "#4C7899FF"
+        - key: border-radius
+          label: Corner radius
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 0
+        - key: icons
+          label: Show notification icons
+          type: boolean
+          default: true
+        - key: max-icon-size
+          label: Maximum icon size
+          type: integer
+          minimum: 0
+          maximum: 512
+          default: 64
+        - key: icon-location
+          label: Icon position
+          type: choice
+          choices: [left, right, top, bottom]
+          default: left
+        - key: markup
+          label: Allow Pango markup
+          type: boolean
+          default: true
+        - key: actions
+          label: Allow notification actions
+          type: boolean
+          default: true
+        - key: history
+          label: Keep expired notifications in history
+          type: boolean
+          default: true
+        - key: default-timeout
+          label: Default timeout in milliseconds
+          type: integer
+          minimum: 0
+          maximum: 3600000
+          default: 0
+        - key: max-history
+          label: Notification history size
+          type: integer
+          minimum: 0
+          maximum: 10000
+          default: 5
+        - key: max-visible
+          label: Maximum visible notifications
+          type: integer
+          minimum: -1
+          maximum: 1000
+          default: 5
+        - key: layer
+          label: Wayland surface layer
+          type: choice
+          choices: [background, bottom, top, overlay]
+          default: top
+        - key: anchor
+          label: Popup position
+          type: choice
+          choices: [top-right, top-center, top-left, bottom-right, bottom-center, bottom-left, center-right, center-left, center]
+          default: top-right
+documentation:
+  configuration: https://manpages.debian.org/testing/mako-notifier/mako.5.en.html

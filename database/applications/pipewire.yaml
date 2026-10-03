@@ -1,0 +1,17 @@
+schema_version: 1
+id: pipewire
+name: PipeWire
+category: audio
+detection:
+  executables: [pipewire]
+  config_paths:
+    - ~/.config/pipewire
+    - /etc/pipewire
+  services:
+    user: [pipewire.service, pipewire-pulse.service, wireplumber.service]
+packages:
+  fedora: [pipewire]
+  arch: [pipewire]
+  debian: [pipewire]
+documentation:
+  home: https://docs.pipewire.org/

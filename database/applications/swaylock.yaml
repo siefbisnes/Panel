@@ -1,0 +1,68 @@
+schema_version: 1
+id: swaylock
+name: Swaylock
+category: tool
+detection:
+  executables: [swaylock]
+  config_paths:
+    - ~/.config/swaylock
+packages:
+  fedora: [swaylock]
+  arch: [swaylock]
+  debian: [swaylock]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+configuration:
+  files:
+    - path: ~/.config/swaylock/config
+      format: conf
+      syntax: equals
+      settings:
+        - key: color
+          label: Background color
+          type: string
+          default: A3A3A3
+        - key: scaling
+          label: Background image scaling
+          type: choice
+          choices: [stretch, fill, fit, center, tile, solid_color]
+          default: fill
+        - key: font
+          label: Indicator font
+          type: string
+        - key: font-size
+          label: Indicator font size
+          type: integer
+          minimum: 1
+          maximum: 300
+        - key: indicator-radius
+          label: Indicator radius
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 50
+        - key: indicator-thickness
+          label: Indicator thickness
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        - key: ring-color
+          label: Ring color
+          type: string
+        - key: inside-color
+          label: Indicator fill color
+          type: string
+        - key: text-color
+          label: Text color
+          type: string
+        - key: key-hl-color
+          label: Key highlight color
+          type: string
+documentation:
+  configuration: https://manpages.debian.org/testing/swaylock/swaylock.1.en.html

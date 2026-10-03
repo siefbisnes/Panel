@@ -1,0 +1,86 @@
+schema_version: 1
+id: wofi
+name: Wofi
+category: launcher
+detection:
+  executables: [wofi]
+  config_paths:
+    - ~/.config/wofi
+packages:
+  fedora: [wofi]
+  arch: [wofi]
+  debian: [wofi]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+configuration:
+  files:
+    - path: ~/.config/wofi/config
+      format: conf
+      syntax: equals
+      settings:
+        - key: show
+          label: Launcher mode
+          type: choice
+          choices: [drun, run, dmenu, window]
+          default: drun
+        - key: width
+          label: Menu width
+          type: string
+          default: 50%
+        - key: height
+          label: Menu height
+          type: string
+          default: 40%
+        - key: matching
+          label: Search matching
+          type: choice
+          choices: [contains, strict-contains, multi-contains, fuzzy]
+          default: contains
+        - key: insensitive
+          label: Case-insensitive search
+          type: boolean
+          default: false
+        - key: lines
+          label: Visible entries
+          type: integer
+          minimum: 1
+          maximum: 200
+        - key: columns
+          label: Columns
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+        - key: location
+          label: Menu location
+          type: choice
+          choices: [center, top-left, top-right, bottom-left, bottom-right]
+          default: center
+        - key: layer
+          label: Wayland surface layer
+          type: choice
+          choices: [background, bottom, top, overlay]
+          default: top
+        - key: prompt
+          label: Search prompt
+          type: string
+          default: ""
+        - key: hide_search
+          label: Hide search field
+          type: boolean
+          default: false
+        - key: no_actions
+          label: Disable desktop actions
+          type: boolean
+          default: false
+        - key: gtk_dark
+          label: Prefer dark GTK theme
+          type: boolean
+          default: false
+documentation:
+  configuration: https://manpages.debian.org/testing/wofi/wofi.5.en.html

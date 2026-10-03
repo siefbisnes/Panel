@@ -1,0 +1,19 @@
+schema_version: 1
+id: wl-clipboard
+name: wl-clipboard
+category: tool
+detection:
+  executables: [wl-copy, wl-paste]
+packages:
+  fedora: [wl-clipboard]
+  arch: [wl-clipboard]
+  debian: [wl-clipboard]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+documentation:
+  home: https://github.com/bugaevc/wl-clipboard

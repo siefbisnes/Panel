@@ -1,0 +1,64 @@
+schema_version: 1
+id: hyprland
+name: Hyprland
+category: desktop
+detection:
+  executables: [Hyprland]
+  config_paths:
+    - ~/.config/hypr
+  desktop_entries: [hyprland]
+  processes: [Hyprland]
+packages:
+  fedora: [hyprland]
+  arch: [hyprland]
+  debian: [hyprland]
+configuration:
+  files:
+    - path: ~/.config/hypr/hyprland.conf
+      format: hyprlang
+      settings:
+        - key: general.gaps_in
+          label: Inner gaps
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 5
+        - key: general.gaps_out
+          label: Outer gaps
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 20
+        - key: general.border_size
+          label: Border size
+          type: integer
+          minimum: 0
+          maximum: 20
+          default: 2
+        - key: general.layout
+          label: Window layout
+          type: choice
+          choices: [dwindle, master]
+          default: dwindle
+        - key: decoration.rounding
+          label: Window corner radius
+          type: integer
+          minimum: 0
+          maximum: 50
+          default: 0
+        - key: decoration.active_opacity
+          label: Active window opacity
+          type: number
+          minimum: 0
+          maximum: 1
+          step: 0.05
+          default: 1
+        - key: decoration.inactive_opacity
+          label: Inactive window opacity
+          type: number
+          minimum: 0
+          maximum: 1
+          step: 0.05
+          default: 1
+documentation:
+  configuration: https://wiki.hypr.land/Configuring/

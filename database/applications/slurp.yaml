@@ -1,0 +1,19 @@
+schema_version: 1
+id: slurp
+name: Slurp
+category: tool
+detection:
+  executables: [slurp]
+packages:
+  fedora: [slurp]
+  arch: [slurp]
+  debian: [slurp]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+documentation:
+  home: https://github.com/emersion/slurp

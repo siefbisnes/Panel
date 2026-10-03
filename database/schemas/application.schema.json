@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Linux System application definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "name", "category", "detection"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "category": {
+      "enum": ["desktop", "bar", "terminal", "shell", "launcher", "editor", "browser", "tool",
+               "audio", "media", "notification", "file-manager", "network", "other"]
+    },
+    "detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "executables": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/executable" } },
+        "config_paths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/path" } },
+        "desktop_entries": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/executable" } },
+        "processes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/executable" } },
+        "services": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "user": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/unit" } },
+            "system": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/unit" } }
+          }
+        },
+        "weights": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "package": { "$ref": "#/$defs/weight" },
+            "executable": { "$ref": "#/$defs/weight" },
+            "desktop_entry": { "$ref": "#/$defs/weight" },
+            "config": { "$ref": "#/$defs/weight" }
+          }
+        }
+      }
+    },
+    "packages": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fedora": { "$ref": "#/$defs/package_list" },
+        "arch": { "$ref": "#/$defs/package_list" },
+        "debian": { "$ref": "#/$defs/package_list" },
+        "opensuse": { "$ref": "#/$defs/package_list" },
+        "flatpak": { "$ref": "#/$defs/package_list" }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/path" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["path"],
+                "properties": {
+                  "path": { "$ref": "#/$defs/path" },
+                  "format": { "type": "string", "pattern": "^[a-z0-9+-]+$" },
+                  "syntax": { "enum": ["lua", "equals", "space", "ini", "json", "fish", "vim", "block"] },
+                  "settings": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/config_setting" }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z_]*$" },
+      "additionalProperties": { "type": "string", "pattern": "^https?://\\S+$" }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "desktop_environments": { "$ref": "#/$defs/compatibility_matrix" },
+        "display_servers": { "$ref": "#/$defs/compatibility_matrix" }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(~|\\$\\{?(HOME|XDG_(CONFIG|DATA|STATE|CACHE)_HOME)\\}?)?(/.*)?$"
+    },
+    "executable": { "type": "string", "pattern": "^[A-Za-z0-9_][A-Za-z0-9._+-]*$" },
+    "unit": { "type": "string", "pattern": "^[A-Za-z0-9_][A-Za-z0-9:_.@-]*\\.(service|socket|timer)$" },
+    "weight": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "compatibility_matrix": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+      "additionalProperties": { "enum": ["supported", "partial", "unsupported"] }
+    },
+    "config_setting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "type"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.-]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "group": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["boolean", "integer", "number", "string", "choice"] },
+        "default": { "type": ["string", "number", "boolean", "null"] },
+        "minimum": { "type": "number" },
+        "maximum": { "type": "number" },
+        "step": { "type": "number", "exclusiveMinimum": 0 },
+        "choices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "description": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "choice" } }, "required": ["type"] },
+          "then": { "required": ["choices"] }
+        },
+        {
+          "if": { "properties": { "type": { "enum": ["integer", "number"] } }, "required": ["type"] },
+          "then": { "anyOf": [
+            { "required": ["minimum", "maximum"] },
+            { "not": { "anyOf": [{ "required": ["minimum"] }, { "required": ["maximum"] }] } }
+          ] }
+        }
+      ]
+    },
+    "package_list": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:@-]*$" }
+    }
+  }
+}

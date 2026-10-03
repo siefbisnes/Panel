@@ -1,0 +1,45 @@
+schema_version: 1
+id: git
+name: Git
+category: tool
+detection:
+  executables: [git]
+  config_paths:
+    - ~/.gitconfig
+    - ~/.config/git
+    - /etc/gitconfig
+packages:
+  fedora: [git]
+  arch: [git]
+  debian: [git]
+configuration:
+  files:
+    - path: ~/.gitconfig
+      format: ini
+      settings:
+        - key: user.name
+          label: User name
+          type: string
+        - key: user.email
+          label: User email
+          type: string
+        - key: core.editor
+          label: Default editor
+          type: string
+        - key: init.defaultBranch
+          label: Initial branch name
+          type: string
+          default: main
+        - key: pull.rebase
+          label: Rebase when pulling
+          type: boolean
+          default: false
+        - key: color.ui
+          label: Color output
+          type: choice
+          choices: [auto, always, never]
+          default: auto
+    - path: ~/.config/git/config
+      format: ini
+documentation:
+  configuration: https://git-scm.com/docs/git-config

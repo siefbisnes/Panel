@@ -1,0 +1,41 @@
+schema_version: 1
+id: rofi
+name: Rofi
+category: launcher
+detection:
+  executables: [rofi]
+  config_paths:
+    - ~/.config/rofi
+  desktop_entries: [rofi, rofi-theme-selector]
+packages:
+  fedora: [rofi, rofi-wayland]
+  arch: [rofi, rofi-wayland]
+  debian: [rofi]
+configuration:
+  files:
+    - path: ~/.config/rofi/config.rasi
+      format: rasi
+      settings:
+        - key: configuration.font
+          label: Font
+          type: string
+          default: "monospace 12"
+        - key: configuration.show-icons
+          label: Show application icons
+          type: boolean
+          default: false
+        - key: configuration.width
+          label: Menu width
+          type: integer
+          minimum: 10
+          maximum: 100
+          default: 50
+        - key: configuration.lines
+          label: Visible entries
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 15
+documentation:
+  home: https://davatorium.github.io/rofi/
+  configuration: https://davatorium.github.io/rofi/current/rofi-theme.5/

@@ -1,0 +1,13 @@
+schema_version: 1
+id: pavucontrol
+name: PulseAudio Volume Control
+category: audio
+detection:
+  executables: [pavucontrol]
+  desktop_entries: [pavucontrol]
+packages:
+  fedora: [pavucontrol]
+  arch: [pavucontrol]
+  debian: [pavucontrol]
+documentation:
+  official: https://freedesktop.org/software/pulseaudio/pavucontrol/

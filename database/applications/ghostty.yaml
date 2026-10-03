@@ -1,0 +1,93 @@
+schema_version: 1
+id: ghostty
+name: Ghostty
+category: terminal
+detection:
+  executables: [ghostty]
+  config_paths:
+    - ~/.config/ghostty
+  desktop_entries: [com.mitchellh.ghostty]
+packages:
+  arch: [ghostty]
+configuration:
+  files:
+    - path: ~/.config/ghostty/config
+      format: conf
+      syntax: equals
+      settings:
+        - key: font-size
+          label: Font size
+          type: number
+          minimum: 6
+          maximum: 72
+          step: 0.5
+          default: 13
+        - key: background-opacity
+          label: Background opacity
+          type: number
+          minimum: 0.1
+          maximum: 1
+          step: 0.05
+          default: 1
+        - key: font-family
+          label: Font family
+          type: string
+        - key: theme
+          label: Color theme
+          type: string
+        - key: cursor-style
+          label: Cursor style
+          type: choice
+          choices: [block, bar, underline, block_hollow]
+          default: block
+          description: The running shell or program may request a different cursor style.
+        - key: selection-clear-on-typing
+          label: Clear selection when typing
+          type: boolean
+          default: true
+          description: Clear selected text when a key sends input to the running program.
+        - key: selection-clear-on-copy
+          label: Clear selection after copying
+          type: boolean
+          default: false
+        - key: mouse-hide-while-typing
+          label: Hide mouse pointer while typing
+          type: boolean
+        - key: copy-on-select
+          label: Copy selected text automatically
+          type: choice
+          choices: ["true", "false", clipboard]
+          default: "true"
+          description: On Linux, true prefers the selection clipboard; clipboard copies to both.
+        - key: shell-integration
+          label: Shell integration
+          type: choice
+          choices: [none, detect, bash, elvish, fish, nushell, zsh]
+          default: detect
+          description: Select automatic shell detection or a specific supported shell integration.
+        - key: window-decoration
+          label: Window decorations
+          type: choice
+          choices: [none, auto, client, server]
+          default: auto
+          description: A compositor may override decoration preferences.
+        - key: confirm-close-surface
+          label: Confirm closing a terminal surface
+          type: choice
+          choices: ["true", "false", always]
+          default: "true"
+          description: Always prompts when set to always; false disables the confirmation.
+        - key: window-padding-x
+          label: Horizontal window padding
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 0
+        - key: window-padding-y
+          label: Vertical window padding
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 0
+documentation:
+  configuration: https://ghostty.org/docs/config

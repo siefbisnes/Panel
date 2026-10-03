@@ -1,0 +1,192 @@
+schema_version: 1
+id: kitty
+name: Kitty
+category: terminal
+detection:
+  executables: [kitty]
+  config_paths:
+    - ~/.config/kitty
+  desktop_entries: [kitty]
+packages:
+  fedora: [kitty]
+  arch: [kitty]
+  debian: [kitty]
+configuration:
+  files:
+    - path: ~/.config/kitty/kitty.conf
+      format: conf
+      syntax: space
+      settings:
+        - {key: active_window_title_template, type: string, default: "none"}
+        - {key: auto_reload_config, type: number, default: 0.1}
+        - {key: background_blur, type: integer, default: 0, minimum: 0, maximum: 64}
+        - {key: background_image_linear, type: boolean, default: false}
+        - {key: background_opacity, type: number, default: 1.0, minimum: 0, maximum: 1, step: 0.05}
+        - {key: background_tint, type: number, default: 0, minimum: 0, maximum: 1, step: 0.05}
+        - {key: background_tint_gaps, type: number, default: 1.0, minimum: 0, maximum: 1, step: 0.05}
+        - {key: bell_on_tab, type: string, default: "🔔 "}
+        - {key: clear_all_mouse_actions, type: boolean, default: false}
+        - {key: clear_all_shortcuts, type: boolean, default: false}
+        - {key: clear_selection_on_clipboard_loss, type: boolean, default: false}
+        - {key: click_interval, type: number, default: -1.0}
+        - {key: clipboard_max_size, type: number, default: 512.0}
+        - {key: close_on_child_death, type: boolean, default: false}
+        - {key: copy_on_select, type: string, default: ""}
+        - {key: cursor_beam_thickness, type: number, default: 1.5}
+        - {key: cursor_stop_blinking_after, type: number, default: 15.0}
+        - {key: cursor_trail, type: integer, default: 0, minimum: 0, maximum: 1000}
+        - {key: cursor_trail_start_threshold, type: integer, default: 2, minimum: 0, maximum: 100}
+        - {key: cursor_underline_thickness, type: number, default: 2.0}
+        - {key: detect_urls, type: boolean, default: true}
+        - {key: dim_opacity, type: number, default: 0.4, minimum: 0, maximum: 1, step: 0.05}
+        - {key: disable_ligatures, type: integer, default: 0, minimum: 0, maximum: 2}
+        - {key: drag_threshold, type: integer, default: 5, minimum: 0, maximum: 100}
+        - {key: draw_minimal_borders, type: boolean, default: true}
+        - {key: draw_window_borders_for_single_window, type: boolean, default: false}
+        - {key: dynamic_background_opacity, type: boolean, default: false}
+        - {key: editor, type: string, default: "."}
+        - {key: enable_audio_bell, type: boolean, default: true}
+        - {key: font_size, label: Font size, type: number, default: 11.0, minimum: 6, maximum: 72, step: 0.5}
+        - {key: force_ltr, type: boolean, default: false}
+        - {key: forward_stdio, type: boolean, default: false}
+        - {key: inactive_text_alpha, type: number, default: 1.0, minimum: -1, maximum: 1, step: 0.05}
+        - {key: input_delay, type: integer, default: 3, minimum: 0, maximum: 100}
+        - {key: linux_bell_theme, type: string, default: "__custom"}
+        - {key: listen_on, type: string, default: "none"}
+        - {key: macos_custom_beam_cursor, type: boolean, default: false}
+        - {key: macos_dock_badge_on_bell, type: boolean, default: true}
+        - {key: macos_fullscreen_ignore_safe_area_insets, type: boolean, default: false}
+        - {key: macos_hide_from_tasks, type: boolean, default: false}
+        - {key: macos_menubar_title_max_length, type: integer, default: 0, minimum: 0, maximum: 500}
+        - {key: macos_quit_when_last_window_closed, type: boolean, default: false}
+        - {key: macos_thicken_font, type: number, default: 0, minimum: 0, maximum: 5, step: 0.1}
+        - {key: macos_traditional_fullscreen, type: boolean, default: false}
+        - {key: macos_window_resizable, type: boolean, default: true}
+        - {key: map_timeout, type: number, default: 0, minimum: 0, maximum: 60, step: 0.1}
+        - {key: momentum_scroll, type: number, default: 0.96, minimum: 0, maximum: 1, step: 0.01}
+        - {key: pixel_scroll, type: boolean, default: true}
+        - {key: remember_window_position, type: boolean, default: false}
+        - {key: remember_window_size, type: boolean, default: true}
+        - {key: repaint_delay, type: integer, default: 10, minimum: 1, maximum: 100}
+        - {key: resize_in_steps, type: boolean, default: false}
+        - {key: scrollback_fill_enlarged_window, type: boolean, default: false}
+        - {key: scrollback_lines, type: integer, default: 2000, minimum: -1, maximum: 1000000}
+        - {key: scrollback_pager_history_size, type: integer, default: 0, minimum: 0, maximum: 4096}
+        - {key: scrollbar_gap, type: number, default: 0.1, minimum: 0, maximum: 10, step: 0.05}
+        - {key: scrollbar_handle_opacity, type: number, default: 0.5, minimum: 0, maximum: 1, step: 0.05}
+        - {key: scrollbar_hitbox_expansion, type: number, default: 0.25, minimum: 0, maximum: 10, step: 0.05}
+        - {key: scrollbar_hover_width, type: number, default: 1.0, minimum: 0, maximum: 10, step: 0.1}
+        - {key: scrollbar_interactive, type: boolean, default: true}
+        - {key: scrollbar_jump_on_click, type: boolean, default: true}
+        - {key: scrollbar_min_handle_height, type: number, default: 1.0, minimum: 0, maximum: 100, step: 0.5}
+        - {key: scrollbar_radius, type: number, default: 0.3, minimum: 0, maximum: 10, step: 0.1}
+        - {key: scrollbar_track_hover_opacity, type: number, default: 0.1, minimum: 0, maximum: 1, step: 0.05}
+        - {key: scrollbar_track_opacity, type: number, default: 0, minimum: 0, maximum: 1, step: 0.05}
+        - {key: scrollbar_width, type: number, default: 0.5, minimum: 0.1, maximum: 10, step: 0.1}
+        - {key: select_by_word_characters, type: string, default: "@-./_~?&=%+#"}
+        - {key: select_by_word_characters_forward, type: string, default: ""}
+        - {key: shell, type: string, default: "."}
+        - {key: sync_to_monitor, type: boolean, default: true}
+        - {key: tab_activity_symbol, type: string, default: ""}
+        - {key: tab_bar_filter, type: string, default: ""}
+        - {key: tab_bar_margin_width, type: number, default: 0, minimum: 0, maximum: 100, step: 0.5}
+        - {key: tab_bar_min_tabs, type: integer, default: 2, minimum: 0, maximum: 100}
+        - {key: tab_bar_show_new_tab_button, type: boolean, default: false}
+        - {key: tab_separator, type: string, default: " ┇"}
+        - {key: tab_title_max_length, type: integer, default: 0, minimum: 0, maximum: 500}
+        - {key: tab_title_template, type: string, default: "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{tab.last_focused_progress_percent}{title}"}
+        - {key: term, type: string, default: "xterm-kitty"}
+        - {key: text_composition_strategy, type: string, default: "platform"}
+        - {key: touch_scroll_multiplier, type: number, default: 1.0, minimum: -10, maximum: 10, step: 0.1}
+        - {key: update_check_interval, type: number, default: 0.0, minimum: 0, maximum: 720, step: 1}
+        - {key: url_excluded_characters, type: string, default: ""}
+        - {key: visual_window_select_characters, type: string, default: "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"}
+        - {key: wayland_enable_ime, type: boolean, default: true}
+        - {key: wheel_scroll_min_lines, type: integer, default: 1, minimum: -100, maximum: 100}
+        - {key: wheel_scroll_multiplier, type: number, default: 5.0, minimum: -100, maximum: 100, step: 0.5}
+        - {key: window_alert_on_bell, type: boolean, default: true}
+        - {key: window_drag_tolerance, type: number, default: 2.0, minimum: -200, maximum: 100, step: 0.5}
+        - {key: window_logo_alpha, type: number, default: 0.5, minimum: 0, maximum: 1, step: 0.05}
+        - {key: window_resize_step_cells, type: integer, default: 2, minimum: 1, maximum: 100}
+        - {key: window_resize_step_lines, type: integer, default: 2, minimum: 1, maximum: 100}
+        - {key: window_title_bar_min_windows, type: integer, default: 0, minimum: 0, maximum: 100}
+        - {key: window_title_template, type: string, default: "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.window}{progress_percent}{title}"}
+        - {key: allow_cloning, type: choice, default: "ask", choices: ["yes", "no", "ask"]}
+        - {key: allow_remote_control, type: choice, default: "no", choices: ["password", "socket-only", "socket", "no", "yes"]}
+        - {key: background_image_layout, type: choice, default: "tiled", choices: ["mirror-tiled", "scaled", "tiled", "clamped", "centered", "cscaled"]}
+        - {key: default_pointer_shape, type: choice, default: "beam", choices: ["arrow", "beam", "text", "pointer", "hand", "help", "wait", "progress", "crosshair", "cell", "vertical-text", "move", "e-resize", "ne-resize", "nw-resize", "n-resize", "se-resize", "sw-resize", "s-resize", "w-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", "alias", "copy", "not-allowed", "no-drop", "grab", "grabbing"]}
+        - {key: focus_follows_mouse, type: choice, default: "no", choices: ["no", "yes", "drop"]}
+        - {key: linux_display_server, type: choice, default: "auto", choices: ["auto", "wayland", "x11"]}
+        - {key: macos_colorspace, type: choice, default: "srgb", choices: ["srgb", "default", "displayp3"]}
+        - {key: macos_show_window_title_in, type: choice, default: "all", choices: ["all", "menubar", "none", "window"]}
+        - {key: palette_generate, type: choice, default: "fixed", choices: ["fixed", "semantic", "legacy"]}
+        - {key: placement_strategy, type: choice, default: "center", choices: ["top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"]}
+        - {key: pointer_shape_when_grabbed, type: choice, default: "arrow", choices: ["arrow", "beam", "text", "pointer", "hand", "help", "wait", "progress", "crosshair", "cell", "vertical-text", "move", "e-resize", "ne-resize", "nw-resize", "n-resize", "se-resize", "sw-resize", "s-resize", "w-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", "alias", "copy", "not-allowed", "no-drop", "grab", "grabbing"]}
+        - {key: progress_bar, type: choice, default: "top", choices: ["left", "right", "top", "bottom", "hidden"]}
+        - {key: scrollbar, type: choice, default: "scrolled", choices: ["scrolled", "always", "never", "hovered", "scrolled-and-hovered"]}
+        - {key: show_hyperlink_targets, type: choice, default: "never", choices: ["never", "always", "Ctrl", "Shift", "Super", "Alt"]}
+        - {key: strip_trailing_spaces, type: choice, default: "never", choices: ["always", "never", "smart"]}
+        - {key: tab_bar_align, type: choice, default: "left", choices: ["left", "center", "right"]}
+        - {key: tab_bar_style, type: choice, default: "fade", choices: ["fade", "hidden", "powerline", "separator", "slant", "custom"]}
+        - {key: tab_powerline_style, type: choice, default: "angled", choices: ["angled", "round", "slanted"]}
+        - {key: tab_switch_strategy, type: choice, default: "previous", choices: ["last", "left", "previous", "right"]}
+        - {key: terminfo_type, type: choice, default: "path", choices: ["path", "direct", "none"]}
+        - {key: undercurl_style, type: choice, default: "thin-sparse", choices: ["thin-sparse", "thin-dense", "thick-sparse", "thick-dense"]}
+        - {key: underline_hyperlinks, type: choice, default: "hover", choices: ["hover", "always", "never"]}
+        - {key: window_logo_position, type: choice, default: "bottom-right", choices: ["top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"]}
+        - {key: window_title_bar, type: choice, default: "top", choices: ["top", "bottom"]}
+        - {key: window_title_bar_align, type: choice, default: "center", choices: ["left", "center", "right"]}
+        - {key: allow_hyperlinks, label: Allow hyperlinks, type: choice, default: "yes", choices: ["yes", "no", "ask"]}
+        - {key: cursor_shape, type: choice, default: "block", choices: ["block", "beam", "underline"]}
+        - {key: cursor_shape_unfocused, type: choice, default: "hollow", choices: ["block", "beam", "underline", "hollow", "unchanged"]}
+        - {key: hide_window_decorations, type: choice, default: "no", choices: ["no", "yes", "titlebar-only", "titlebar-and-corners"]}
+        - {key: macos_option_as_alt, type: choice, default: "no", choices: ["no", "left", "right", "both"]}
+        - {key: macos_titlebar_color, type: string, default: "system"}
+        - {key: scrollbar_handle_color, type: string, default: "foreground"}
+        - {key: scrollbar_track_color, type: string, default: "foreground"}
+        - {key: tab_bar_edge, type: choice, default: "bottom", choices: ["top", "bottom", "left", "right"]}
+        - {key: url_style, type: choice, default: "curly", choices: ["none", "straight", "double", "curly", "dotted", "dashed"]}
+        - {key: wayland_titlebar_color, type: string, default: "system"}
+        - {key: kitty_mod, label: Kitty modifier key, type: string, default: "ctrl+shift"}
+        - {key: font_family, type: string, default: "monospace"}
+        - {key: bold_font, type: string, default: "auto"}
+        - {key: italic_font, type: string, default: "auto"}
+        - {key: bold_italic_font, type: string, default: "auto"}
+        - {key: foreground, type: string, default: "#dddddd"}
+        - {key: background, type: string, default: "#000000"}
+        - {key: cursor, type: string, default: "#cccccc"}
+        - {key: cursor_text_color, type: string, default: "#111111"}
+        - {key: selection_foreground, type: string, default: "#000000"}
+        - {key: selection_background, type: string, default: "#fffacd"}
+        - {key: active_border_color, type: string, default: "#00ff00"}
+        - {key: inactive_border_color, type: string, default: "#cccccc"}
+        - {key: bell_border_color, type: string, default: "#ff5a00"}
+        - {key: url_color, type: string, default: "#0087bd"}
+        - {key: active_tab_foreground, type: string, default: "#000000"}
+        - {key: active_tab_background, type: string, default: "#eeeeee"}
+        - {key: inactive_tab_foreground, type: string, default: "#444444"}
+        - {key: inactive_tab_background, type: string, default: "#999999"}
+        - {key: mark1_foreground, type: string, default: "black"}
+        - {key: mark1_background, type: string, default: "#98d3cb"}
+        - {key: mark2_foreground, type: string, default: "black"}
+        - {key: mark2_background, type: string, default: "#f2dcd3"}
+        - {key: mark3_foreground, type: string, default: "black"}
+        - {key: mark3_background, type: string, default: "#f274bc"}
+        - {key: color0, type: string, default: "#000000"}
+        - {key: color1, type: string, default: "#cc0403"}
+        - {key: color2, type: string, default: "#19cb00"}
+        - {key: color3, type: string, default: "#cecb00"}
+        - {key: color4, type: string, default: "#0d73cc"}
+        - {key: color5, type: string, default: "#cb1ed1"}
+        - {key: color6, type: string, default: "#0dcdcd"}
+        - {key: color7, type: string, default: "#dddddd"}
+        - {key: color8, type: string, default: "#767676"}
+        - {key: color9, type: string, default: "#f2201f"}
+        - {key: color10, type: string, default: "#23fd00"}
+        - {key: color11, type: string, default: "#fffd00"}
+        - {key: color12, type: string, default: "#1a8fff"}
+        - {key: color13, type: string, default: "#fd28ff"}
+        - {key: color14, type: string, default: "#14ffff"}
+        - {key: color15, type: string, default: "#ffffff"}
+documentation:
+  configuration: https://sw.kovidgoyal.net/kitty/conf/

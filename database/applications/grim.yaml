@@ -1,0 +1,19 @@
+schema_version: 1
+id: grim
+name: Grim
+category: tool
+detection:
+  executables: [grim]
+packages:
+  fedora: [grim]
+  arch: [grim]
+  debian: [grim]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+documentation:
+  home: https://sr.ht/~emersion/grim/

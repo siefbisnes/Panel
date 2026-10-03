@@ -1,0 +1,76 @@
+schema_version: 1
+id: neovim
+name: Neovim
+category: editor
+detection:
+  executables: [nvim]
+  config_paths:
+    - ~/.config/nvim
+  desktop_entries: [nvim]
+packages:
+  fedora: [neovim]
+  arch: [neovim]
+  debian: [neovim]
+configuration:
+  files:
+    - path: ~/.config/nvim/init.lua
+      format: lua
+      settings:
+        - key: vim.opt.number
+          label: Show line numbers
+          type: boolean
+          default: true
+          description: Display absolute line numbers in the editor.
+        - key: vim.opt.relativenumber
+          label: Relative line numbers
+          type: boolean
+          default: false
+          description: Display line numbers relative to the cursor.
+        - key: vim.opt.numberwidth
+          label: Number column width
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 4
+        - key: vim.opt.scrolloff
+          label: Keep lines around cursor
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 0
+        - key: vim.opt.tabstop
+          label: Tab width
+          type: integer
+          minimum: 1
+          maximum: 16
+          default: 8
+        - key: vim.opt.shiftwidth
+          label: Indent width
+          type: integer
+          minimum: 0
+          maximum: 16
+          default: 0
+        - key: vim.opt.expandtab
+          label: Use spaces for indentation
+          type: boolean
+          default: false
+        - key: vim.opt.wrap
+          label: Wrap long lines
+          type: boolean
+          default: true
+        - key: vim.opt.ignorecase
+          label: Ignore case in search
+          type: boolean
+          default: false
+        - key: vim.opt.smartcase
+          label: Smart case in search
+          type: boolean
+          default: false
+        - key: vim.opt.termguicolors
+          label: True color support
+          type: boolean
+          default: false
+    - path: ~/.config/nvim/init.vim
+      format: vim
+documentation:
+  home: https://neovim.io/doc/user/

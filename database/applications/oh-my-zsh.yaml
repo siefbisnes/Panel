@@ -1,0 +1,14 @@
+schema_version: 1
+id: oh-my-zsh
+name: Oh My Zsh
+category: shell
+detection:
+  config_paths:
+    - ~/.oh-my-zsh
+configuration:
+  files:
+    - path: ~/.zshrc
+      format: conf
+documentation:
+  official: https://ohmyz.sh/
+  installation: https://github.com/ohmyzsh/ohmyzsh/wiki

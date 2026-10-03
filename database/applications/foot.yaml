@@ -1,0 +1,106 @@
+schema_version: 1
+id: foot
+name: Foot
+category: terminal
+detection:
+  executables: [foot]
+  config_paths:
+    - ~/.config/foot
+  desktop_entries: [foot]
+packages:
+  fedora: [foot]
+  arch: [foot]
+  debian: [foot]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+configuration:
+  files:
+    - path: ~/.config/foot/foot.ini
+      format: ini
+      settings:
+        - key: main.font
+          label: Font
+          type: string
+          default: "monospace:size=8"
+        - key: main.font-size-adjustment
+          label: Font zoom increment
+          type: number
+          default: 0.5
+          step: 0.1
+        - key: main.dpi-aware
+          label: Scale font using monitor DPI
+          type: boolean
+          default: false
+        - key: main.initial-color-theme
+          label: Initial color theme
+          type: choice
+          choices: [dark, light]
+          default: dark
+        - key: main.resize-by-cells
+          label: Resize by character cells
+          type: boolean
+          default: true
+        - key: main.resize-delay-ms
+          label: Resize delay
+          type: integer
+          minimum: 0
+          maximum: 1000
+          default: 100
+        - key: scrollback.lines
+          label: Scrollback lines
+          type: integer
+          minimum: 0
+          maximum: 1000000
+          default: 1000
+        - key: scrollback.multiplier
+          label: Mouse scroll multiplier
+          type: number
+          minimum: 0.1
+          maximum: 100
+          default: 3
+        - key: cursor.style
+          label: Cursor style
+          type: choice
+          choices: [block, beam, underline, hollow]
+          default: block
+        - key: cursor.blink
+          label: Blink cursor
+          type: boolean
+          default: false
+        - key: cursor.blink-rate
+          label: Cursor blink interval
+          type: integer
+          minimum: 100
+          maximum: 2000
+          default: 500
+        - key: mouse.hide-when-typing
+          label: Hide cursor while typing
+          type: boolean
+          default: false
+        - key: mouse.alternate-scroll-mode
+          label: Alternate-screen wheel scrolling
+          type: boolean
+          default: true
+        - key: security.osc52
+          label: Clipboard access from terminal programs
+          type: choice
+          choices: [disabled, copy-enabled, paste-enabled, enabled]
+          default: enabled
+        - key: colors-dark.alpha
+          label: Dark theme background opacity
+          type: number
+          minimum: 0
+          maximum: 1
+          step: 0.05
+          default: 1
+        - key: colors-dark.blur
+          label: Blur transparent background
+          type: boolean
+          default: false
+documentation:
+  configuration: https://manpages.debian.org/testing/foot/foot.ini.5.en.html

@@ -1,0 +1,111 @@
+schema_version: 1
+id: dunst
+name: Dunst
+category: notification
+detection:
+  executables: [dunst]
+  processes: [dunst]
+  config_paths:
+    - ~/.config/dunst
+packages:
+  fedora: [dunst]
+  arch: [dunst]
+  debian: [dunst]
+configuration:
+  files:
+    - path: ~/.config/dunst/dunstrc
+      format: ini
+      settings:
+        - key: global.font
+          label: Notification font
+          group: Text
+          type: string
+          default: "Monospace 8"
+          description: Pango font description used for notification text.
+        - key: global.markup
+          label: Notification markup
+          group: Text
+          type: choice
+          choices: [full, strip, "no"]
+          default: "no"
+          description: Control how markup in incoming notification text is handled.
+        - key: global.alignment
+          label: Text alignment
+          group: Text
+          type: choice
+          choices: [left, center, right]
+          default: left
+        - key: global.vertical_alignment
+          label: Vertical text alignment
+          group: Text
+          type: choice
+          choices: [top, center, bottom]
+          default: center
+        - key: global.origin
+          label: Notification position
+          group: Placement
+          type: choice
+          choices: [top-left, top-center, top-right, bottom-left, bottom-center, bottom-right, left-center, center, right-center]
+          default: top-right
+        - key: global.follow
+          label: Follow monitor focus
+          group: Placement
+          type: choice
+          choices: [none, mouse, keyboard]
+          default: none
+          description: Select the monitor based on pointer or keyboard focus.
+        - key: global.notification_limit
+          label: Visible notification limit
+          group: Placement
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 20
+          description: Zero means no limit; queued notifications appear as room becomes available.
+        - key: global.padding
+          label: Vertical padding
+          group: Appearance
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 8
+        - key: global.horizontal_padding
+          label: Horizontal padding
+          group: Appearance
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 8
+        - key: global.frame_width
+          label: Notification frame width
+          group: Appearance
+          type: integer
+          minimum: 0
+          maximum: 32
+          default: 3
+          description: Set to zero to disable the frame.
+        - key: global.history_length
+          label: Notification history size
+          group: History
+          type: integer
+          minimum: 0
+          maximum: 500
+          default: 20
+        - key: global.sticky_history
+          label: Keep recalled notifications visible
+          group: History
+          type: boolean
+          default: true
+        - key: global.show_indicators
+          label: Show action and URL indicators
+          group: Behavior
+          type: boolean
+          default: true
+        - key: global.stack_duplicates
+          label: Group duplicate notifications
+          group: Behavior
+          type: boolean
+          default: true
+documentation:
+  official: https://dunst-project.org/
+  configuration: https://dunst-project.org/documentation/dunst/

@@ -1,0 +1,14 @@
+schema_version: 1
+id: htop
+name: htop
+category: tool
+detection:
+  executables: [htop]
+  processes: [htop]
+packages:
+  fedora: [htop]
+  arch: [htop]
+  debian: [htop]
+documentation:
+  official: https://htop.dev/
+  manual: https://manpages.debian.org/stable/htop/htop.1.en.html

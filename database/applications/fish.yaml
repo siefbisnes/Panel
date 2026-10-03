@@ -1,0 +1,39 @@
+schema_version: 1
+id: fish
+name: Fish
+category: shell
+detection:
+  executables: [fish]
+  config_paths:
+    - ~/.config/fish
+packages:
+  fedora: [fish]
+  arch: [fish]
+  debian: [fish]
+configuration:
+  files:
+    - path: ~/.config/fish/config.fish
+      format: fish
+      settings:
+        - key: fish_greeting
+          label: Startup greeting
+          type: string
+          default: ""
+        - key: fish_color_command
+          label: Command color
+          type: string
+          default: brgreen
+        - key: fish_color_error
+          label: Error color
+          type: string
+          default: brred
+        - key: fish_color_param
+          label: Parameter color
+          type: string
+          default: cyan
+        - key: fish_color_quote
+          label: Quoted text color
+          type: string
+          default: yellow
+documentation:
+  home: https://fishshell.com/docs/current/

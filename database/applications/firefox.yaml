@@ -1,0 +1,18 @@
+schema_version: 1
+id: firefox
+name: Firefox
+category: browser
+detection:
+  executables: [firefox, firefox-esr]
+  config_paths:
+    - ~/.mozilla/firefox
+    - ~/.config/mozilla/firefox
+  desktop_entries: [firefox, firefox-esr, org.mozilla.firefox]
+  processes: [firefox, firefox-bin, firefox-esr]
+packages:
+  fedora: [firefox]
+  arch: [firefox]
+  debian: [firefox, firefox-esr]
+  flatpak: [org.mozilla.firefox]
+documentation:
+  home: https://support.mozilla.org/products/firefox

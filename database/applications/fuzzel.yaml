@@ -1,0 +1,131 @@
+schema_version: 1
+id: fuzzel
+name: Fuzzel
+category: launcher
+detection:
+  executables: [fuzzel]
+  config_paths:
+    - ~/.config/fuzzel
+packages:
+  fedora: [fuzzel]
+  arch: [fuzzel]
+  debian: [fuzzel]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+    sway: supported
+  display_servers:
+    wayland: supported
+    x11: unsupported
+configuration:
+  files:
+    - path: ~/.config/fuzzel/fuzzel.ini
+      format: ini
+      settings:
+        - key: main.font
+          label: Font
+          type: string
+          default: monospace
+        - key: main.use-bold
+          label: Use bold text
+          type: boolean
+          default: false
+        - key: main.dpi-aware
+          label: DPI-aware font scaling
+          type: choice
+          choices: [auto, "yes", "no"]
+          default: auto
+        - key: main.icons-enabled
+          label: Show application icons
+          type: boolean
+          default: true
+        - key: main.hide-before-typing
+          label: Hide results until typing
+          type: boolean
+          default: false
+        - key: main.match-mode
+          label: Search matching mode
+          type: choice
+          choices: [exact, fzf, fuzzy]
+          default: fzf
+        - key: main.sort-result
+          label: Sort search results
+          type: boolean
+          default: true
+        - key: main.filter-desktop
+          label: Filter by current desktop
+          type: boolean
+          default: false
+        - key: main.show-actions
+          label: Show desktop-entry actions
+          type: boolean
+          default: false
+        - key: main.lines
+          label: Visible results
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 15
+        - key: main.width
+          label: Window width in characters
+          type: integer
+          minimum: 10
+          maximum: 200
+          default: 30
+        - key: main.layer
+          label: Surface layer
+          type: choice
+          choices: [top, overlay]
+          default: overlay
+        - key: main.keyboard-focus
+          label: Keyboard focus mode
+          type: choice
+          choices: [exclusive, on-demand]
+          default: exclusive
+        - key: main.exit-on-keyboard-focus-loss
+          label: Close when focus is lost
+          type: boolean
+          default: true
+        - key: main.anchor
+          label: Window anchor
+          type: choice
+          choices: [top-left, top, top-right, left, center, right, bottom-left, bottom, bottom-right]
+          default: center
+        - key: main.horizontal-pad
+          label: Horizontal padding
+          type: integer
+          minimum: 0
+          maximum: 200
+          default: 40
+        - key: main.vertical-pad
+          label: Vertical padding
+          type: integer
+          minimum: 0
+          maximum: 200
+          default: 8
+        - key: border.width
+          label: Border width
+          type: integer
+          minimum: 0
+          maximum: 20
+          default: 1
+        - key: border.radius
+          label: Corner radius
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 10
+        - key: colors.background
+          label: Background color
+          type: string
+          default: fdf6e3ff
+        - key: colors.text
+          label: Text color
+          type: string
+          default: 657b83ff
+        - key: colors.selection
+          label: Selection color
+          type: string
+          default: eee8d5ff
+documentation:
+  configuration: https://manpages.debian.org/testing/fuzzel/fuzzel.ini.5.en.html

@@ -1,0 +1,55 @@
+schema_version: 1
+id: waybar
+name: Waybar
+category: bar
+detection:
+  executables: [waybar]
+  config_paths:
+    - ~/.config/waybar
+packages:
+  fedora: [waybar]
+  arch: [waybar]
+  debian: [waybar]
+compatibility:
+  desktop_environments:
+    hyprland: supported
+  display_servers:
+    wayland: supported
+configuration:
+  files:
+    - path: ~/.config/waybar/config.jsonc
+      format: jsonc
+    - path: ~/.config/waybar/config
+      format: json
+      settings:
+        - key: position
+          label: Bar position
+          type: choice
+          choices: [top, bottom, left, right]
+          default: top
+        - key: layer
+          label: Compositor layer
+          type: choice
+          choices: [top, bottom, overlay]
+          default: top
+        - key: height
+          label: Bar height
+          type: integer
+          minimum: 0
+          maximum: 400
+          default: 30
+        - key: spacing
+          label: Module spacing
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 4
+        - key: reload_style_on_change
+          label: Reload styles when changed
+          type: boolean
+          default: true
+    - path: ~/.config/waybar/style.css
+      format: css
+documentation:
+  configuration: https://github.com/Alexays/Waybar/wiki/Configuration
+  styling: https://github.com/Alexays/Waybar/wiki/Styling

@@ -1,0 +1,21 @@
+schema_version: 1
+id: tmux
+name: tmux
+category: tool
+detection:
+  executables: [tmux]
+  processes: [tmux]
+  config_paths:
+    - ~/.tmux.conf
+    - ~/.config/tmux
+packages:
+  fedora: [tmux]
+  arch: [tmux]
+  debian: [tmux]
+configuration:
+  files:
+    - path: ~/.tmux.conf
+      format: conf
+documentation:
+  official: https://github.com/tmux/tmux/wiki
+  manual: https://man7.org/linux/man-pages/man1/tmux.1.html

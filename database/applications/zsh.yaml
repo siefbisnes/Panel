@@ -1,0 +1,23 @@
+schema_version: 1
+id: zsh
+name: Zsh
+category: shell
+detection:
+  executables: [zsh]
+  processes: [zsh]
+  config_paths:
+    - ~/.zshrc
+    - ~/.zprofile
+packages:
+  fedora: [zsh]
+  arch: [zsh]
+  debian: [zsh]
+configuration:
+  files:
+    - path: ~/.zshrc
+      format: conf
+    - path: ~/.zprofile
+      format: conf
+documentation:
+  official: https://www.zsh.org/
+  user_guide: https://zsh.sourceforge.io/Guide/
