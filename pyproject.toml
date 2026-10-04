@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "linux-system"
+name = "panel"
 version = "0.1.0"
-description = "Discover, understand, and manage the software and configuration that make up a Linux system."
+description = "A minimalist Panel for discovering and managing your Linux desktop."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["PyYAML>=6.0", "jsonschema>=4.0"]
@@ -15,7 +15,7 @@ dev = ["pytest>=7", "ruff>=0.11"]
 gui = ["PyGObject>=3.50"]
 
 [project.scripts]
-linux-system = "linux_system.cli:main"
+panel = "linux_system.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/linux_system"]

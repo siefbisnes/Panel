@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Linux System application definition",
+  "title": "Panel application definition",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "id", "name", "category", "detection"],

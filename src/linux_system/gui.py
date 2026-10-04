@@ -1,4 +1,4 @@
-"""Minimal GNOME-style desktop window for the Linux System overview."""
+"""Minimalist Panel for discovering and managing a Linux desktop."""
 
 from __future__ import annotations
 
@@ -7,7 +7,6 @@ import os
 import sys
 from collections.abc import Callable
 
-from .backup import backup_root, create_backup
 from .compatibility import compatibility_details, declared_compatibility
 from .config_editor import (
         ConfigEditorError,
@@ -50,7 +49,6 @@ def _make_nav_button(label: str, active: bool = False) -> Gtk.Widget:
                 "Applications": "application-x-executable-symbolic",
                 "Store": "system-software-install-symbolic",
                 "Configuration": "folder-documents-symbolic",
-                "Backups": "document-save-symbolic",
                 "About": "help-about-symbolic",
         }
         content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -160,25 +158,6 @@ def _append_list_row(
         else:
                 parent.append(row_box)
                 return row_box
-
-
-def _backup_lines(env: Environment) -> list[str]:
-        lines = []
-        for manifest_path in sorted(
-                backup_root(env).glob("*/manifest.json"), reverse=True
-        ):
-                try:
-                        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-                        lines.append(
-                                f"{manifest.get('created_at', manifest_path.parent.name)} · "
-                                f"{len(manifest.get('applications', []))} apps · "
-                                f"{len(manifest.get('entries', []))} files"
-                        )
-                except (OSError, json.JSONDecodeError):
-                        lines.append(
-                                f"Unreadable backup manifest · {manifest_path.name}"
-                        )
-        return lines
 
 
 def _setting_control(setting: ConfigSetting, value: object) -> Gtk.Widget:
@@ -507,14 +486,14 @@ def _build_config_editor(
 
 def _build_window(env: Environment | None = None) -> Gtk.Window:
         window = Gtk.Window()
-        window.set_title("Linux System")
+        window.set_title("Panel")
         window.set_default_size(1100, 720)
         window.set_size_request(760, 520)
 
         env = env or Environment()
 
         header = Gtk.HeaderBar()
-        title = Gtk.Label(label="Linux System")
+        title = Gtk.Label(label="Panel")
         title.add_css_class("title")
         header.set_title_widget(title)
         refresh_button = Gtk.Button(icon_name="view-refresh-symbolic")
@@ -536,7 +515,6 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 "Applications",
                 "Store",
                 "Configuration",
-                "Backups",
                 "About",
         )
         stack = Gtk.Stack()
@@ -1143,99 +1121,9 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 page.append(listing)
                 return _scrolled(page)
 
-        def build_backups(results: list[AppResult]) -> Gtk.Widget:
-                configured_apps = [
-                        result.app for result in results if result.configured
-                ]
-                page = _make_page(
-                        "Backups",
-                        "Snapshots of the configuration files found on this system.",
-                )
-                action_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-                app_count = len(configured_apps)
-                app_label = "application" if app_count == 1 else "applications"
-                create_button = Gtk.Button(
-                        label=f"Back up {app_count} configured {app_label}"
-                )
-                create_button.add_css_class("suggested-action")
-                create_button.set_sensitive(bool(configured_apps))
-                action_row.append(create_button)
-                page.append(action_row)
-                feedback = Gtk.Label(label="", xalign=0)
-                feedback.set_wrap(True)
-                page.append(feedback)
-
-                included_title = Gtk.Label(label="Apps ready to back up", xalign=0)
-                included_title.add_css_class("heading")
-                page.append(included_title)
-                if configured_apps:
-                        included_apps = Gtk.ListBox()
-                        included_apps.add_css_class("boxed-list")
-                        included_apps.set_selection_mode(Gtk.SelectionMode.NONE)
-                        for app in configured_apps:
-                                existing_paths = [
-                                        entry
-                                        for entry in config_entries(app, env)
-                                        if entry.exists
-                                ]
-                                path_count = len(existing_paths)
-                                path_label = (
-                                        "configuration path"
-                                        if path_count == 1
-                                        else "configuration paths"
-                                )
-                                _append_list_row(
-                                        included_apps,
-                                        app.name,
-                                        f"{path_count} existing {path_label}",
-                                )
-                        page.append(included_apps)
-                else:
-                        no_config = Gtk.Label(
-                                label=(
-                                        "No supported application configuration paths were found. "
-                                        "The backup action is available once a declared config path exists."
-                                ),
-                                xalign=0,
-                        )
-                        no_config.set_wrap(True)
-                        no_config.add_css_class("dim-label")
-                        page.append(no_config)
-
-                history_title = Gtk.Label(label="Backup history", xalign=0)
-                history_title.add_css_class("heading")
-                page.append(history_title)
-                history = Gtk.ListBox()
-                history.add_css_class("boxed-list")
-                history.set_selection_mode(Gtk.SelectionMode.NONE)
-                history_lines = _backup_lines(env)
-                for line in history_lines:
-                        _append_list_row(history, line, str(backup_root(env)))
-                empty = Gtk.Label(
-                        label="No backups yet. Create a snapshot above to see it here.",
-                        xalign=0,
-                )
-                empty.add_css_class("dim-label")
-                empty.set_visible(not history_lines)
-                page.append(empty)
-                page.append(_scrolled(history))
-
-                def make_backup(_button: Gtk.Button) -> None:
-                        try:
-                                created = create_backup(env, configured_apps)
-                        except OSError as exc:
-                                feedback.set_text(f"Backup failed: {exc}")
-                                return
-                        feedback.set_text(f"Backup created at {created}")
-                        _append_list_row(history, created.name, str(backup_root(env)))
-                        empty.set_visible(False)
-
-                create_button.connect("clicked", make_backup)
-                return _scrolled(page)
-
         def build_about() -> Gtk.Widget:
                 page = _make_page(
-                        "About Linux System",
+                        "About Panel",
                         "A community project from Egypt, still early and growing.",
                 )
                 story = Gtk.Label(
@@ -1243,7 +1131,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                                 "I work at a local coding company in Egypt, where I see how much "
                                 "ambition there is across the Linux community. I believe people "
                                 "from different distros and projects can meet, share what they "
-                                "know, and build something real together. Linux System is my "
+                                "know, and build something real together. Panel is my "
                                 "small starting point for that collaboration."
                         ),
                         xalign=0,
@@ -1292,7 +1180,6 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 stack.add_named(build_applications(results, probe), "Applications")
                 stack.add_named(build_store(results, probe), "Store")
                 stack.add_named(build_configuration(results), "Configuration")
-                stack.add_named(build_backups(results), "Backups")
                 stack.add_named(build_about(), "About")
                 stack.set_visible_child_name(
                         visible_page if visible_page in nav_items else "Overview"

@@ -6,7 +6,7 @@ import subprocess
 import pytest
 
 from linux_system import gui as gui_module
-from linux_system.cli import main
+from linux_system.cli import build_parser, main
 from linux_system.database import (
         community_root,
         load_database,
@@ -33,6 +33,10 @@ def run(system, capsys, *args):
 def test_default_command_lists_detected(system, capsys):
         code, out, _ = run(system, capsys)
         assert code == 0 and "✓ Rofi" in out and "1 application detected." in out
+
+
+def test_parser_uses_panel_name():
+        assert build_parser().prog == "panel"
 
 
 def test_info(system, capsys):
@@ -100,9 +104,7 @@ def test_doctor_reports_definition_problems(system, capsys, tmp_path):
 
 
 def test_user_definitions_extend_the_database(system, capsys, tmp_path):
-        directory = (
-                system.home / ".config" / "linux-system" / "database" / "applications"
-        )
+        directory = system.home / ".config" / "panel" / "database" / "applications"
         directory.mkdir(parents=True)
         (directory / "mytool.yaml").write_text(
                 "schema_version: 1\nid: mytool\nname: MyTool\ncategory: tool\ndetection:\n  executables: [mytool]\n"
@@ -114,7 +116,7 @@ def test_user_definitions_extend_the_database(system, capsys, tmp_path):
 def test_backup_creates_a_manifest_and_copies_config(system, capsys):
         code, out, _ = run(system, capsys, "backup", "rofi")
         assert code == 0 and "Backup created" in out
-        backups = sorted((system.env.data_home / "linux-system" / "backups").glob("*"))
+        backups = sorted((system.env.data_home / "panel" / "backups").glob("*"))
         assert backups
         manifest = json.loads((backups[-1] / "manifest.json").read_text())
         assert manifest["applications"] == ["rofi"]
@@ -126,9 +128,7 @@ def test_backup_creates_a_manifest_and_copies_config(system, capsys):
 
 def test_restore_requires_explicit_force_for_existing_files(system, capsys):
         assert run(system, capsys, "backup", "rofi")[0] == 0
-        backup_dir = sorted(
-                (system.env.data_home / "linux-system" / "backups").glob("*")
-        )[-1]
+        backup_dir = sorted((system.env.data_home / "panel" / "backups").glob("*"))[-1]
         target = system.home / ".config" / "rofi" / "config.rasi"
         target.write_text("new")
         code, _, err = run(system, capsys, "restore", str(backup_dir))
@@ -159,7 +159,7 @@ def test_submit_writes_a_reviewable_definition(system, capsys):
         )
         assert code == 0 and "Submission created" in out
         submission = sorted(
-                (system.env.data_home / "linux-system" / "submissions").glob("*.yaml")
+                (system.env.data_home / "panel" / "submissions").glob("*.yaml")
         )[-1]
         assert "id: ghostty" in submission.read_text()
         assert run(system, capsys, "validate", str(submission))[0] == 0
@@ -224,9 +224,9 @@ def test_gui_sidebar_navigation(system):
                 "Applications",
                 "Store",
                 "Configuration",
-                "Backups",
                 "About",
         ]
+        assert stack.get_child_by_name("Backups") is None
         about_page = stack.get_child_by_name("About")
         assert about_page is not None
         pending = [about_page]
@@ -248,51 +248,6 @@ def test_gui_sidebar_navigation(system):
                 gui_module.DISCORD_PROFILE_URL
                 == "https://discord.com/users/896604385440829481"
         )
-
-
-@pytest.mark.skipif(gui_module.Gtk is None, reason="GTK 4 is not installed")
-def test_backup_page_shows_apps_and_creates_snapshot(system):
-        if not gui_module.Gtk.init_check():
-                pytest.skip("GTK display is unavailable")
-        window = gui_module._build_window(system.env)
-        try:
-                stack = window.get_child().get_last_child()
-                backups = stack.get_child_by_name("Backups")
-                assert backups is not None
-                pending = [backups]
-                labels = []
-                buttons = []
-                while pending:
-                        widget = pending.pop()
-                        if isinstance(widget, gui_module.Gtk.Label):
-                                labels.append(widget.get_text())
-                        if isinstance(widget, gui_module.Gtk.Button):
-                                buttons.append(widget)
-                        child = widget.get_first_child()
-                        while child is not None:
-                                pending.append(child)
-                                child = child.get_next_sibling()
-
-                assert "Rofi" in labels
-                assert "2 existing configuration paths" in labels
-                create_button = next(
-                        button
-                        for button in buttons
-                        if button.get_label() == "Back up 1 configured application"
-                )
-                assert create_button.get_sensitive()
-                create_button.emit("clicked")
-                manifests = list(
-                        (system.env.data_home / "linux-system" / "backups").glob(
-                                "*/manifest.json"
-                        )
-                )
-                assert len(manifests) == 1
-                manifest = json.loads(manifests[0].read_text())
-                assert manifest["applications"] == ["rofi"]
-                assert len(manifest["entries"]) == 2
-        finally:
-                window.destroy()
 
 
 @pytest.mark.skipif(gui_module.Gtk is None, reason="GTK 4 is not installed")

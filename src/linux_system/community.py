@@ -11,7 +11,7 @@ from .environment import Environment
 
 
 def submissions_root(env: Environment) -> Path:
-        return env.data_home / "linux-system" / "submissions"
+        return env.data_home / "panel" / "submissions"
 
 
 def build_submission(

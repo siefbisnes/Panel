@@ -17,7 +17,7 @@ class BackupError(RuntimeError):
 
 
 def backup_root(env: Environment) -> Path:
-        return env.data_home / "linux-system" / "backups"
+        return env.data_home / "panel" / "backups"
 
 
 def _store_path(backup_dir: Path, source: Path) -> Path:

@@ -2,7 +2,7 @@
 
 Create `database/applications/<id>.yaml`. The file name must match `id`. An application definition is
 reviewable metadata: it describes how to detect an app, which package names install it, where its
-configuration lives, and which facts/controls are safe to present in Linux System. It is not an
+configuration lives, and which facts/controls are safe to present in Panel. It is not an
 installer script.
 
 ```yaml
@@ -98,7 +98,7 @@ represented as misleading scalar controls.
 
 ## Package Mapping In More Detail
 
-Package mappings tell Linux System which exact identifiers to check in the local package index and
+Package mappings tell Panel which exact identifiers to check in the local package index and
 which name to offer to the Store. The schema accepts only these keys: `fedora`, `arch`, `debian`,
 `opensuse`, and `flatpak`. Mappings are optional; leave a key out when you cannot verify it rather
 than filling in a guess.
@@ -152,7 +152,7 @@ packages:
 
 Local queries can be misleading when repositories are disabled or package metadata is stale. When
 you cannot query a matching system, use the distro's official package search and mention that source
-in your pull request. Linux System currently recognizes native packages through RPM (Fedora and
+in your pull request. Panel currently recognizes native packages through RPM (Fedora and
 openSUSE), pacman (Arch), and dpkg (Debian), plus Flatpak. Other distributions are not automatically
 covered just because they use one of these package formats.
 
@@ -163,7 +163,7 @@ schema. Multiple names are useful for genuine variants, not as a list of guesses
 
 - Put the preferred native install candidate first. For a new install, the Store selects the first
   mapped native name for the detected distro.
-- Later native names can help Linux System recognize an alternative that is already installed. They
+- Later native names can help Panel recognize an alternative that is already installed. They
   are **not** install retries: if the first package is unavailable or fails to install, the Store
   does not try the next list item.
 - The Store selects a Flatpak mapping when the current distro has no usable native mapping/backend
@@ -209,7 +209,7 @@ Before submitting a mapping, check that:
 - The distro key is one of `fedora`, `arch`, `debian`, `opensuse`, or `flatpak`.
 - Each value is a valid package identifier and the package is available from the intended repository.
 - The package provides this app, rather than a related component or a differently branded fork.
-- The first native name is the one you'd want Linux System to try for a fresh install.
+- The first native name is the one you'd want Panel to try for a fresh install.
 - Each alternative is a real variant you want detection to recognize; no duplicate or speculative
   names are included.
 - Flatpak values are exact Flathub application IDs.
@@ -260,12 +260,12 @@ change later.
 
 ## Test Locally
 
-Validate one definition and inspect how Linux System loads it. Replace `<id>` with the filename stem:
+Validate one definition and inspect how Panel loads it. Replace `<id>` with the filename stem:
 
 ```bash
-.venv/bin/linux-system validate database/applications/<id>.yaml
-.venv/bin/linux-system --db database info <id>
-.venv/bin/linux-system --db database config <id>
+.venv/bin/panel validate database/applications/<id>.yaml
+.venv/bin/panel --db database info <id>
+.venv/bin/panel --db database config <id>
 ```
 
 The validator checks YAML syntax, schema fields, and the `id`/filename match. The `info` and `config`
@@ -275,7 +275,7 @@ metadata lookups above for that. For actual Store install behavior, use a dispos
 as described in [Safely Test A Mapping](#safely-test-a-mapping).
 
 For a local override, put the definition at
-`$XDG_CONFIG_HOME/linux-system/database/applications/<id>.yaml` and run the normal scan. Or test an
+`$XDG_CONFIG_HOME/panel/database/applications/<id>.yaml` and run the normal scan. Or test an
 unmerged directory with `--db DIR`.
 
 ## Submit A Suggestion
@@ -283,7 +283,7 @@ unmerged directory with `--db DIR`.
 The CLI can create a reviewable starting point:
 
 ```bash
-linux-system submit \
+panel submit \
   --id example-app \
   --name "Example App" \
   --category tool \
@@ -295,7 +295,7 @@ linux-system submit \
 ```
 
 This writes a schema-validated YAML file under
-`$XDG_DATA_HOME/linux-system/submissions/`. It does **not** install the app, publish the file, or add
+`$XDG_DATA_HOME/panel/submissions/`. It does **not** install the app, publish the file, or add
 it to the trusted database. A maintainer must review it and merge it into the bundled or community
 database before other users receive it.
 
@@ -311,7 +311,7 @@ separately maintained community database, add the file there and submit its repo
 project's contribution/review process. Users can then load that repository with:
 
 ```bash
-linux-system update-db --source <git-url>
+panel update-db --source <git-url>
 ```
 
 Subsequent `update-db` runs fast-forward the configured community database. The app loads bundled
@@ -320,7 +320,7 @@ definitions first and later trusted layers override an earlier entry with the sa
 Before opening a pull request, validate the full bundle and run the test suite:
 
 ```bash
-.venv/bin/linux-system validate
+.venv/bin/panel validate
 .venv/bin/python -m pytest -q
 ```
 

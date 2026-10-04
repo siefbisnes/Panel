@@ -38,7 +38,7 @@ def bundled_root() -> Path:
 
 
 def community_root(env: Environment) -> Path:
-        return env.data_home / "linux-system" / "community-db"
+        return env.data_home / "panel" / "community-db"
 
 
 def default_roots(env: Environment, extra: list[Path] | None = None) -> list[Path]:
@@ -46,7 +46,7 @@ def default_roots(env: Environment, extra: list[Path] | None = None) -> list[Pat
         return [
                 bundled_root(),
                 community_root(env),
-                env.config_home / "linux-system" / "database",
+                env.config_home / "panel" / "database",
                 *(extra or []),
         ]
 

@@ -12,5 +12,5 @@ jobs:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
       - name: Validate application definitions
-        run: linux-system validate
+        run: panel validate
       - run: pytest

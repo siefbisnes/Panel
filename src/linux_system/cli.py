@@ -44,7 +44,7 @@ def _load(args: argparse.Namespace, env: Environment) -> LoadResult:
         result = load_database(default_roots(env, args.db))
         if result.errors:
                 print(
-                        f"warning: {len(result.errors)} definition problem(s) found; run 'linux-system doctor' for details",
+                        f"warning: {len(result.errors)} definition problem(s) found; run 'panel doctor' for details",
                         file=sys.stderr,
                 )
         return result
@@ -298,8 +298,8 @@ def cmd_update_db(args, env, style) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
-                prog="linux-system",
-                description="Discover, understand, and manage the software and configuration of a Linux system.",
+                prog="panel",
+                description="Discover, understand, and manage your Linux desktop.",
         )
         parser.add_argument(
                 "-V", "--version", action="version", version=f"%(prog)s {__version__}"
@@ -418,7 +418,7 @@ def build_parser() -> argparse.ArgumentParser:
                 "community",
                 help="show the trusted database and pending community submissions",
         )
-        gui_p = sub.add_parser("gui", help="launch the GNOME-style overview window")
+        gui_p = sub.add_parser("gui", help="launch the Panel desktop interface")
         update_p = sub.add_parser(
                 "update-db", help="fetch or update the community database"
         )
@@ -453,6 +453,6 @@ def main(argv: list[str] | None = None, env: Environment | None = None) -> int:
         )
         try:
                 return COMMANDS[args.command](args, env, style)
-        except BrokenPipeError:  # e.g. `linux-system list | head`
+        except BrokenPipeError:  # e.g. `panel list | head`
                 os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
                 return 1

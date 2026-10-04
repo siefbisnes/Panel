@@ -1,7 +1,9 @@
-# Linux System
+# Panel
 
-A small Linux desktop project for finding installed apps, seeing what Linux System knows about them,
-opening their configuration, and trying package installs from a shared YAML database.
+Panel's goal is to make Linux desktops easier to understand and manage without hiding the distro
+tools that do the actual work. It shows which supported apps appear to be installed, the evidence
+behind that result, and where their configuration lives; it also provides reviewed package actions
+through the system's existing package managers.
 
 ## Install
 
@@ -20,10 +22,8 @@ curl -fsSL https://raw.githubusercontent.com/siefbisnes/Panel/main/install.sh | 
 ```
 
 As with any remote shell installer, review [install.sh](install.sh) before running it. It installs
-under `~/.local/share/linux-system/venv` and links the command into `~/.local/bin`; it does not
+under `~/.local/share/panel/venv` and links the `panel` command into `~/.local/bin`; it does not
 change your system Python or install distro packages.
-
-![Linux System GTK overview](docs/images/linux-system-overview.png)
 
 > **Quick reality check:** this is an early prototype, not a Linux distribution, a replacement for
 > your distro's package manager, or a production-ready system-management tool. The app can ask your
@@ -42,7 +42,7 @@ that's part of the invitation.
 
 I work at a local coding company in Egypt, where I see how much ambition there is across the Linux
 community. I believe people from different distros and projects can meet, share what they know, and
-build something real together. Linux System is my small starting point for that kind of collaboration;
+build something real together. Panel is my small starting point for that kind of collaboration;
 it is still an early project, and it needs contributors to grow into anything dependable.
 
 I'm `altftheoriginal` on Discord: [open my profile](https://discord.com/users/896604385440829481).
@@ -52,10 +52,10 @@ I'm `altftheoriginal` on Discord: [open my profile](https://discord.com/users/89
 - Scans supported apps using package, executable, desktop-entry, config, process, and service signals.
 - Shows the evidence behind detections. A missing or unavailable check can be **unknown**, not a
   definite "not installed".
-- Provides a GTK interface with Overview, Applications, Store, Configuration, Backups, and About pages.
+- Provides a GTK interface with Overview, Applications, Store, Configuration, and About pages.
 - Shows compatibility and official documentation when a definition includes those details.
 - Opens declared config files and offers controls for reviewed scalar settings in supported formats.
-- Can back up and restore declared config files.
+- The CLI can back up and restore declared config files.
 - Can request native package installs/removals or per-user Flatpak installs after confirmation.
 
 Definitions are metadata, not scripts: scanning does not execute commands from YAML. Store actions
@@ -69,14 +69,14 @@ Requires Python 3.10 or newer. From a clone:
 ```bash
 python -m venv .venv
 .venv/bin/pip install -e ".[dev]"
-.venv/bin/linux-system scan
+.venv/bin/panel scan
 ```
 
 For the GTK app, install GTK 4 and PyGObject, then:
 
 ```bash
 .venv/bin/pip install -e ".[gui]"
-.venv/bin/linux-system gui
+.venv/bin/panel gui
 ```
 
 If pip cannot install PyGObject on your distro, install the GTK 4 and GObject-introspection Python
@@ -102,25 +102,25 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 Read the script and the [Oh My Zsh install guidance](https://github.com/ohmyzsh/ohmyzsh/wiki) before
 running it. Its installer renames an existing `~/.zshrc` to `~/.zshrc.pre-oh-my-zsh` when present.
-Linux System can detect Zsh and an Oh My Zsh checkout, but it does not run this upstream installer
+Panel can detect Zsh and an Oh My Zsh checkout, but it does not run this upstream installer
 for you.
 
 ## Useful Commands
 
 ```bash
-linux-system                         # quick scan
-linux-system scan                    # overview and detected apps
-linux-system list --all              # include apps not detected on this machine
-linux-system info rofi               # app details and detection evidence
-linux-system config rofi             # show config locations
-linux-system backup rofi             # back up declared configuration
-linux-system restore /path/to/backup --force
-linux-system gui                     # open the GTK app
-linux-system doctor                  # check scanner access and database problems
-linux-system validate                # validate bundled YAML definitions
-linux-system submit --id demo --name Demo --category tool --executable demo
-linux-system community               # database and local submission summary
-linux-system update-db --source URL  # clone/update a community definitions repository
+panel                         # quick scan
+panel scan                    # overview and detected apps
+panel list --all              # include apps not detected on this machine
+panel info rofi               # app details and detection evidence
+panel config rofi             # show config locations
+panel backup rofi             # back up declared configuration
+panel restore /path/to/backup --force
+panel gui                     # open the GTK app
+panel doctor                  # check scanner access and database problems
+panel validate                # validate bundled YAML definitions
+panel submit --id demo --name Demo --category tool --executable demo
+panel community               # database and local submission summary
+panel update-db --source URL  # clone/update a community definitions repository
 ```
 
 `scan`, `list`, and `info` accept `--json`. Add local definitions with `--db DIR`. Native installs
@@ -131,8 +131,8 @@ not the user's configuration.
 
 Want to help? A useful first contribution is one accurate app definition. Add
 `database/applications/<id>.yaml`; the file name must match the lowercase `id` in the YAML. For a
-personal test, put it under `$XDG_CONFIG_HOME/linux-system/database/applications/` or load it with
-`--db DIR`. `linux-system submit` can also make a local draft, but it does not publish it. For a
+personal test, put it under `$XDG_CONFIG_HOME/panel/database/applications/` or load it with
+`--db DIR`. `panel submit` can also make a local draft, but it does not publish it. For a
 shared definition, open a pull request so someone else can review it.
 
 Here's a package mapping based on the bundled Firefox definition:
@@ -175,8 +175,8 @@ available. Configuration by itself means a config file exists; it does not prove
 Definitions load in this order, with later entries overriding earlier ones that have the same `id`:
 
 1. Bundled: `database/applications/`
-2. Community: `$XDG_DATA_HOME/linux-system/community-db`
-3. Personal: `$XDG_CONFIG_HOME/linux-system/database/`
+2. Community: `$XDG_DATA_HOME/panel/community-db`
+3. Personal: `$XDG_CONFIG_HOME/panel/database/`
 4. Extra directories passed with `--db DIR`
 
 ## Help Build It
@@ -187,7 +187,7 @@ The project needs testing across real distros and desktops before anyone should 
 complete or dependable.
 
 ```bash
-.venv/bin/linux-system validate
+.venv/bin/panel validate
 .venv/bin/python -m pytest -q
 ```
 

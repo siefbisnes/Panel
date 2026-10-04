@@ -2,17 +2,17 @@
 set -eu
 
 REPOSITORY_URL="https://github.com/siefbisnes/Panel.git"
-INSTALL_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/linux-system"
+INSTALL_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/panel"
 VENV="$INSTALL_ROOT/venv"
 BIN_DIR="$HOME/.local/bin"
-LAUNCHER="$BIN_DIR/linux-system"
+LAUNCHER="$BIN_DIR/panel"
 INSTALL_GUI=0
 
 usage() {
     cat <<'EOF'
 Usage: install.sh [--gui]
 
-Install Linux System into a private virtual environment under ~/.local/share.
+Install Panel into a private virtual environment under ~/.local/share.
 Pass --gui to install the optional PyGObject dependency as well.
 EOF
 }
@@ -31,7 +31,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 if ! command -v git >/dev/null 2>&1; then
-    printf 'Error: Git is required to install Linux System from GitHub.\n' >&2
+    printf 'Error: Git is required to install Panel from GitHub.\n' >&2
     exit 1
 fi
 
@@ -41,7 +41,7 @@ if ! python3 -c 'import sys; raise SystemExit(sys.version_info < (3, 10))'; then
 fi
 
 if [ -e "$LAUNCHER" ] || [ -L "$LAUNCHER" ]; then
-    if [ ! -L "$LAUNCHER" ] || [ "$(readlink "$LAUNCHER")" != "$VENV/bin/linux-system" ]; then
+    if [ ! -L "$LAUNCHER" ] || [ "$(readlink "$LAUNCHER")" != "$VENV/bin/panel" ]; then
         printf 'Error: %s already exists and is not this install. Move it aside before continuing.\n' "$LAUNCHER" >&2
         exit 1
     fi
@@ -53,23 +53,23 @@ if [ ! -x "$VENV/bin/python" ]; then
 fi
 
 if [ "$INSTALL_GUI" -eq 1 ]; then
-    PACKAGE_SPEC="linux-system[gui] @ git+$REPOSITORY_URL"
+    PACKAGE_SPEC="panel[gui] @ git+$REPOSITORY_URL"
 else
-    PACKAGE_SPEC="linux-system @ git+$REPOSITORY_URL"
+    PACKAGE_SPEC="panel @ git+$REPOSITORY_URL"
 fi
 
 "$VENV/bin/python" -m pip install --upgrade "$PACKAGE_SPEC"
 if [ ! -L "$LAUNCHER" ]; then
-    ln -s "$VENV/bin/linux-system" "$LAUNCHER"
+    ln -s "$VENV/bin/panel" "$LAUNCHER"
 fi
 
-printf '\nLinux System is installed. Run: %s/linux-system\n' "$BIN_DIR"
+printf '\nPanel is installed. Run: %s/panel\n' "$BIN_DIR"
 case ":${PATH:-}:" in
     *":$BIN_DIR:"*) ;;
     *) printf 'Add this to your shell startup file if the command is not found:\n  export PATH="$BIN_DIR:$PATH"\n' ;;
 esac
 if [ "$INSTALL_GUI" -eq 1 ]; then
-    printf 'The GTK interface can be launched with: linux-system gui\n'
+    printf 'The GTK interface can be launched with: panel gui\n'
 else
     printf 'For the GTK interface, install GTK 4 and PyGObject system dependencies, then rerun with --gui.\n'
 fi
