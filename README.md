@@ -1,11 +1,20 @@
 # Panel
 
-Panel's goal is to make Linux desktops easier to understand and manage without hiding the distro
-tools that do the actual work. It shows which supported apps appear to be installed, the evidence
-behind that result, and where their configuration lives; it also provides reviewed package actions
-through the system's existing package managers.
+
+![Panel overview showing a Fedora system scan and detected applications](docs/images/linux-system-overview.png)
+
+Use Panel to:
+
+- Review detected applications and the signals behind each result.
+- Find declared configuration files and inspect supported settings.
+- Request package actions through your existing package manager, with confirmation.
 
 ## Install
+
+> **Early prototype:** Panel is not a replacement for your package manager or a production-ready
+> system-management tool. App definitions and distro coverage are limited; detection is best-effort.
+> Check package names and review each confirmation before acting, and don't rely on Panel for
+> critical systems.
 
 Requires Python 3.10 or newer and Git. This installs the CLI into a user-owned virtual environment
 and does not use `sudo`:
@@ -24,23 +33,6 @@ curl -fsSL https://raw.githubusercontent.com/siefbisnes/Panel/main/install.sh | 
 As with any remote shell installer, review [install.sh](install.sh) before running it. It installs
 under `~/.local/share/panel/venv` and links the `panel` command into `~/.local/bin`; it does not
 change your system Python or install distro packages.
-
-> **Quick reality check:** this is an early prototype, not a Linux distribution, a replacement for
-> your distro's package manager, or a production-ready system-management tool. The app can ask your
-> existing package manager to install or remove software, but that does not make its package database
-> complete or its recommendations reliable. Definitions and distro coverage are still limited and
-> need real users to test, review, and maintain them. Treat results as best-effort, check package names
-> before acting, and don't rely on this for critical systems. Contributing is how we start earning
-> that trust; it isn't proof of reliability by itself.
-
-The idea is to make some everyday Linux tasks easier to follow without hiding the distro tools and
-choices underneath. It's a community-shaped project: shared metadata can help connect different Linux
-setups, while each distro and desktop keeps its own character. There's a lot to build and verify, and
-that's part of the invitation.
-
-## Screenshots
-
-![Panel overview](docs/images/linux-system-overview.png)
 
 ## Why I'm Building This
 
