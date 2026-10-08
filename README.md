@@ -38,6 +38,10 @@ choices underneath. It's a community-shaped project: shared metadata can help co
 setups, while each distro and desktop keeps its own character. There's a lot to build and verify, and
 that's part of the invitation.
 
+## Screenshots
+
+![Panel overview](docs/images/linux-system-overview.png)
+
 ## Why I'm Building This
 
 I work at a local coding company in Egypt, where I see how much ambition there is across the Linux

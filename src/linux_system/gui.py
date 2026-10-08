@@ -32,15 +32,115 @@ try:  # pragma: no cover - optional runtime dependency
         import gi
 
         gi.require_version("Gtk", "4.0")
-        from gi.repository import Gio, GLib, Gtk, Pango
+        gi.require_version("Gdk", "4.0")
+        from gi.repository import Gdk, Gio, GLib, Gtk, Pango
 except Exception:  # pragma: no cover - handled in runtime message
         gi = None
+        Gdk = None
         Gio = None
         GLib = None
         Gtk = None
         Pango = None
 
 DISCORD_PROFILE_URL = "https://discord.com/users/896604385440829481"
+_THEME_CSS_INSTALLED = False
+
+
+def _install_theme_css() -> None:
+        global _THEME_CSS_INSTALLED
+        if Gtk is None or Gdk is None or _THEME_CSS_INSTALLED:
+                return
+        provider = Gtk.CssProvider()
+        css = b"""
+        window {
+                background-color: @theme_bg_color;
+                color: @theme_fg_color;
+        }
+
+        .panel-page {
+                margin-top: 8px;
+                margin-bottom: 8px;
+        }
+
+        .panel-sidebar {
+                background: alpha(@theme_bg_color, 0.76);
+                border: 1px solid alpha(@borders, 0.4);
+                border-radius: 18px;
+                padding: 8px 4px;
+        }
+
+        .panel-nav-button {
+                border-radius: 10px;
+                padding: 10px 12px;
+                margin: 2px 8px;
+        }
+
+        .panel-nav-button:selected,
+        .panel-nav-button.selected {
+                background: alpha(@theme_selected_bg_color, 0.18);
+                color: @theme_selected_fg_color;
+                box-shadow: inset 0 0 0 1px alpha(@theme_selected_bg_color, 0.25);
+        }
+
+        .panel-summary-card,
+        .panel-card {
+                background: alpha(@theme_base_color, 0.82);
+                border: 1px solid alpha(@borders, 0.45);
+                border-radius: 12px;
+        }
+
+        .panel-summary-card {
+                padding: 8px 0;
+        }
+
+        .panel-list row {
+                border-radius: 10px;
+        }
+
+        .panel-list row:hover {
+                background: alpha(@theme_selected_bg_color, 0.08);
+        }
+
+        .panel-list row:selected {
+                background: alpha(@theme_selected_bg_color, 0.16);
+                color: @theme_selected_fg_color;
+        }
+
+        .panel-muted {
+                color: @theme_unfocused_fg_color;
+        }
+
+        .panel-section-title {
+                font-weight: 700;
+        }
+
+        .title-2 {
+                font-weight: 700;
+        }
+
+        .heading {
+                font-weight: 700;
+        }
+
+        button {
+                border-radius: 10px;
+        }
+
+        .suggested-action {
+                background: alpha(@theme_selected_bg_color, 0.18);
+        }
+
+        .destructive-action {
+                background: alpha(@error_bg_color, 0.12);
+        }
+        """
+        provider.load_from_data(css)
+        Gtk.StyleContext.add_provider_for_display(
+                Gdk.Display.get_default(),
+                provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+        )
+        _THEME_CSS_INSTALLED = True
 
 
 def _make_nav_button(label: str, active: bool = False) -> Gtk.Widget:
@@ -65,6 +165,7 @@ def _make_nav_button(label: str, active: bool = False) -> Gtk.Widget:
         button.set_margin_start(8)
         button.set_margin_end(8)
         button.add_css_class("flat")
+        button.add_css_class("panel-nav-button")
         if active:
                 button.add_css_class("selected")
         return button
@@ -72,8 +173,8 @@ def _make_nav_button(label: str, active: bool = False) -> Gtk.Widget:
 
 def _make_summary_card(title: str, value: str) -> Gtk.Widget:
         card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        card.add_css_class("card")
-        card.set_size_request(150, 86)
+        card.add_css_class("panel-summary-card")
+        card.set_size_request(170, 88)
         card.set_margin_top(4)
         card.set_margin_bottom(4)
         card.set_margin_start(4)
@@ -98,13 +199,15 @@ def _make_summary_card(title: str, value: str) -> Gtk.Widget:
 
 def _make_page(title: str, subtitle: str = "") -> Gtk.Box:
         page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
-        page.set_margin_top(24)
-        page.set_margin_bottom(24)
-        page.set_margin_start(28)
-        page.set_margin_end(28)
+        page.add_css_class("panel-page")
+        page.set_margin_top(20)
+        page.set_margin_bottom(20)
+        page.set_margin_start(24)
+        page.set_margin_end(24)
         heading = Gtk.Label(label=title)
         heading.add_css_class("title-1")
         heading.set_halign(Gtk.Align.START)
+        heading.set_xalign(0)
         page.append(heading)
         if subtitle:
                 detail = Gtk.Label(label=subtitle)
@@ -505,11 +608,12 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
         main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         sidebar = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         sidebar.add_css_class("navigation-sidebar")
+        sidebar.add_css_class("panel-sidebar")
         sidebar.set_size_request(220, -1)
-        sidebar.set_margin_top(16)
+        sidebar.set_margin_top(12)
         sidebar.set_margin_bottom(12)
-        sidebar.set_margin_start(4)
-        sidebar.set_margin_end(4)
+        sidebar.set_margin_start(12)
+        sidebar.set_margin_end(8)
         nav_items = (
                 "Overview",
                 "Applications",
@@ -580,7 +684,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                         )
                 page.append(metrics)
                 system_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-                system_box.add_css_class("card")
+                system_box.add_css_class("panel-card")
                 system_box.set_margin_top(8)
                 system_box.set_margin_bottom(8)
                 system_box.set_margin_start(4)
@@ -600,6 +704,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                         )
                         detected_box = Gtk.ListBox()
                         detected_box.add_css_class("boxed-list")
+                        detected_box.add_css_class("panel-list")
                         detected_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
                         overview_rows: dict[Gtk.ListBoxRow, str] = {}
                         for result in installed[:10]:
@@ -644,6 +749,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 search.set_placeholder_text("Search by name, category, or ID")
                 list_box = Gtk.ListBox()
                 list_box.add_css_class("boxed-list")
+                list_box.add_css_class("panel-list")
                 list_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
                 list_box.set_vexpand(True)
                 row_results: dict[Gtk.ListBoxRow, AppResult] = {}
@@ -831,6 +937,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 )
                 listing = Gtk.ListBox()
                 listing.add_css_class("boxed-list")
+                listing.add_css_class("panel-list")
                 listing.set_selection_mode(Gtk.SelectionMode.SINGLE)
                 row_app_ids: dict[Gtk.Widget, str] = {}
                 for result, entry in entries:
@@ -903,6 +1010,7 @@ def _build_window(env: Environment | None = None) -> Gtk.Window:
                 page.append(feedback)
                 listing = Gtk.ListBox()
                 listing.add_css_class("boxed-list")
+                listing.add_css_class("panel-list")
                 listing.set_selection_mode(Gtk.SelectionMode.NONE)
                 search_terms: dict[Gtk.ListBoxRow, str] = {}
                 listing.set_filter_func(
@@ -1214,6 +1322,7 @@ def launch_gui(env: Environment | None = None) -> int:
                 )
                 return 1
 
+        _install_theme_css()
         print("Launching GTK/GNOME overview window...")
         app = Gtk.Application(application_id="org.linux_system.Overview")
 
